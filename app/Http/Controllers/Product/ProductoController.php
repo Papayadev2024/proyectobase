@@ -15,14 +15,9 @@ class ProductoController extends Controller
         //return response()->json(['mensaje' => 'Solicitud AJAX manejada con éxito']);
         $producto = Producto::findOrFail($request->id);
         $producto->update([
-
-            "destacado" => $request->status
+            $request->field => $request->status
         ]);
         
-        //return $request->id;
-        
-        
-        //return response()->json(['html' => $html]);
     }
 
     /**

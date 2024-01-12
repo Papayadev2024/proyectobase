@@ -444,17 +444,17 @@ return [
                 [
                     'type' => 'js',
                     'asset' => true,
-                    'location' => '//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js',
+                    'location' => 'https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js',
                 ],
                 [
                     'type' => 'js',
                     'asset' => true,
-                    'location' => '//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js',
+                    'location' => 'https://code.jquery.com/jquery-3.7.0.js',
                 ],
                 [
                     'type' => 'css',
                     'asset' => true,
-                    'location' => '//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css',
+                    'location' => 'https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css',
                 ],
             ],
         ],
@@ -488,8 +488,8 @@ return [
             'files' => [
                 [
                     'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.jsdelivr.net/npm/sweetalert2@8',
+                    'asset' => true,
+                    'location' => 'https://cdn.jsdelivr.net/npm/sweetalert2@11',
                 ],
             ],
         ],

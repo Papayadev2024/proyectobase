@@ -51,7 +51,7 @@
                         <form method="POST" action="">
                                 @csrf
                             <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input check_d" id='{{'d_'.$producto->id}}' data-idUser='{{$producto->id}}' data-nameUser='{{$producto->nombre}}' >
+                                <input type="checkbox" class="custom-control-input check_d btn_swithc" id='{{'d_'.$producto->id}}' data-field='destacado' data-idUser='{{$producto->id}}' data-nameUser='{{$producto->nombre}}' {{$producto->destacado == 1 ? 'checked' : ''}}>
                                 <label class="custom-control-label" for="{{'d_'.$producto->id}}"></label>
                             </div>
                         </form>
@@ -60,18 +60,22 @@
                         <form method="POST" action="">
                                 @csrf
                             <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input check_v" id='{{'v_'.$producto->id}}' data-idUser='{{$producto->id}}' data-nameUser='{{$producto->nombre}}' >
+                                <input type="checkbox" class="custom-control-input check_v btn_swithc" id='{{'v_'.$producto->id}}' data-field='visible' data-idUser='{{$producto->id}}' data-nameUser='{{$producto->nombre}}' {{$producto->visible == 1 ? 'checked' : ''}} >
                                 <label class="custom-control-label" for="{{'v_'.$producto->id}}"></label>
                             </div>
                         </form>
                     </td>
-                    <td width="15px">
+                    <td width="15px" class='flex'>
                         <a href="{{route('admin.productos.edit', $producto)}}" class="btn btn-primary btn-sm"><i class="far fa-edit"></i></a>
+                        <button class='btn_delete'><i class="far fa-trash-alt"></i></button>
+                        
+                        {{--
                         <form action="{{route('admin.productos.destroy', $producto)}}" method="POST">
                             @method('delete')
                             @csrf
                             <input type="submit" value="Eliminar" class="btn btn-danger btn-sm">
                         </form>
+                        --}}
                     </td>
                 </tr>         
             @endforeach
@@ -91,42 +95,77 @@
      $( document ).ready(function() {
            
         new DataTable('#example');
-       
-        
-         $( ".check_d" ).on( "change", function() {
+
+            //para eliminar registro
+            $( ".btn_delete" ).on( "click", function(e) {
                 
-                var statusDestacado = 0;
-                var idDestacado= $(this).attr('data-idUser');
-                var nombreProducto= $(this).attr('data-nameUser');
+                Swal.fire({
+                    title: "Seguro que deseas Elimnar?",
+                    text: "Vas a Liminar un producto",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Si, borrar!",
+                    cancelButtonText: "Cancelar"
+                    }).then((result) => {
+                    if (result.isConfirmed) {
+                        //aqui pones tu AJAX
+                        
+                        //esto de abajo lo pones en el done
+                        Swal.fire({
+                        title: "Producto eliminado",
+                        text: "xxxxxxxxxxx",
+                        icon: "success"
+                        });
+
+                    }
+                    });
+
+                //variable para el id
+                //aqui lanzas el AJAX
+
+
+            })
+        
+            $( ".btn_swithc" ).on( "change", function() {
+                
+                var status = 0;
+                var id = $(this).attr('data-idUser');
+                var nombreProducto = $(this).attr('data-nameUser');
+                var field = $(this).attr('data-field');
                
                 if( $(this).is(':checked') ){
-                  statusDestacado = 1;
+                    status = 1;
                 }else{
-                  statusDestacado = 0;
+                    status = 0;
                  }
 
                 console.log($('input[name="_token"]').val()); 
-                console.log(statusDestacado);
-                console.log(idDestacado);
+                console.log(status);
+                console.log(id);
+                console.log(field);
 
                 $.ajax({
                     url: "{{ route('producto.updateDestacado') }}",
                     method: 'POST',
                     data:{
                         _token: $('input[name="_token"]').val(),
-                        status: statusDestacado,
-                        id: idDestacado
+                        status: status,
+                        id: id,
+                        field: field,
                     }
                 }).done(function(res){
                    
                     Swal.fire({
-                        position: 'bottom-end',
-                        icon: 'success',
-                        title: 'El producto '+nombreProducto +' ha sido modificado' ,
+                        position: "top-end",
+                        icon: "success",
+                        title: nombreProducto +" a sido modificado",
                         showConfirmButton: false,
-                        timer: 1500,
-                        })
-                    })     
+                        timer: 1500
+                    }); 
+
+                })     
             });
 
 });             
