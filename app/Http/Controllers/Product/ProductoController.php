@@ -8,6 +8,23 @@ use App\Models\Producto;
 
 class ProductoController extends Controller
 {
+
+    public function updateDestacado(Request $request)
+    {
+        // Lógica para manejar la solicitud AJAX
+        //return response()->json(['mensaje' => 'Solicitud AJAX manejada con éxito']);
+        $producto = Producto::findOrFail($request->id);
+        $producto->update([
+
+            "destacado" => $request->status
+        ]);
+        
+        //return $request->id;
+        
+        
+        //return response()->json(['html' => $html]);
+    }
+
     /**
      * Display a listing of the resource.
      */

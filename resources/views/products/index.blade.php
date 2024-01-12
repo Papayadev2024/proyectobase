@@ -25,7 +25,7 @@
     </div>
     <div class="card">
       <div class="card-body">
-        <table class="table table-striped">
+        <table class="table table-striped"  id="tabla" class="display" style="width:100%">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -51,11 +51,20 @@
                             <td>{{$producto->precio}}</td>
                             <td>{{$producto->stock}}</td>
                             <td>
-                            <x-adminlte-input-switch name="Destacado" />
+                                {{-- <form method="POST" action="">
+                                <x-adminlte-input-switch name="destacado" class="destacadoSwitch" />
+                                </form> --}}
+                                <form method="POST" action="">
+                                 @csrf
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input check_d" id='{{'d'.$producto->id}}' data-idUser='{{$producto->id}}' data-nameUser='{{$producto->nombre}}' >
+                                    <label class="custom-control-label" for="{{'d'.$producto->id}}"></label>
+                                </div>
+                                </form>
                             </td>
                             <td>
-                            <x-adminlte-input-switch name="Visible" />
-                              
+                                <x-adminlte-input-switch name="visible"  class="visibleSwitch"  />
+                               
                             </td>
                             <td width="15px"><a href="{{route('admin.productos.edit', $producto)}}" class="btn btn-primary btn-sm">Editar</a></td>
                             <td width="15px"><form action="{{route('admin.productos.destroy', $producto)}}" method="POST">
@@ -78,13 +87,69 @@
 
 <script>
 
-        $( document ).ready(function() {
-            Swal.fire({
-            title: 'Error!',
-            text: 'Do you want to continue',
-            icon: 'error',
-            confirmButtonText: 'Cool'
-            })
-        });
+     $( document ).ready(function() {
+           
+        new DataTable('#tabla');
+       
+        
+         $( ".check_d" ).on( "change", function() {
+                
+                var statusDestacado = 0;
+                var idDestacado= $(this).attr('data-idUser');
+                var nombreProducto= $(this).attr('data-nameUser');
+               
+                if( $(this).is(':checked') ){
+                  statusDestacado = 1;
+                }else{
+                  statusDestacado = 0;
+                 }
+
+                console.log($('input[name="_token"]').val()); 
+                console.log(statusDestacado);
+                console.log(idDestacado);
+
+                $.ajax({
+                    url: "{{ route('producto.updateDestacado') }}",
+                    method: 'POST',
+                    data:{
+                        _token: $('input[name="_token"]').val(),
+                        status: statusDestacado,
+                        id: idDestacado
+                    }
+                }).done(function(res){
+                   
+                    Swal.fire({
+                        position: 'bottom-end',
+                        icon: 'success',
+                        title: 'El producto '+nombreProducto +' ha sido modificado' ,
+                        showConfirmButton: false,
+                        timer: 1500,
+                        })
+                    })     
+            });
+
+});             
+            // $.ajax({
+            //         url: "{{ route('producto.updateDestacado') }}",
+            //         method: 'POST',
+            //         dataType: 'json',
+            //         data: {
+            //             _token: $('input[name="_token"]').val(),
+            //             status: statusDestacado,
+            //             id: idDestacado
+            //         }
+            //         success: function(response) {
+            //             console.log(response);
+            //             $('.destacadoSwitch').html(response.html);
+            //         },
+            //         error: function(error) {
+            //             console.error(error);
+            //         }
+            //      });
+
+
+      
+
 </script>
+
 @stop

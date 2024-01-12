@@ -32,3 +32,7 @@ Route::get('/home', function() {
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::resource('admin/productos',ProductoController::class)->names('admin.productos');
+
+// Route::get('/ruta-ajax', [ProductoController::class, 'metodoAjax'])->name('ruta-ajax');
+
+Route::post('admin/productos/updateDestacado', [ProductoController::class, 'updateDestacado'] )->name('producto.updateDestacado');
