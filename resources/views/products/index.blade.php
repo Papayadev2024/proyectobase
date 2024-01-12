@@ -121,7 +121,7 @@
                     Swal.fire({
                         position: 'bottom-end',
                         icon: 'success',
-                        title: 'El producto '+nombreProducto +' ha sido modificado' ,
+                        title: 'El producto '+ nombreProducto +' ha sido modificado' ,
                         showConfirmButton: false,
                         timer: 1500,
                         })
