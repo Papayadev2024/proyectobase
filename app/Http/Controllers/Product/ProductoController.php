@@ -5,9 +5,18 @@ namespace App\Http\Controllers\Product;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Producto;
+use App\Models\Category;
 
 class ProductoController extends Controller
 {
+
+    public function deleteProducto(Producto $producto)
+    {
+        $producto = Producto::findOrFail($producto->id);
+        $producto->delete();
+       
+    }
+
 
     public function updateDestacado(Request $request)
     {
@@ -15,15 +24,11 @@ class ProductoController extends Controller
         //return response()->json(['mensaje' => 'Solicitud AJAX manejada con éxito']);
         $producto = Producto::findOrFail($request->id);
         $producto->update([
-
-            "destacado" => $request->status
+            $request->field => $request->status
         ]);
         
-        //return $request->id;
-        
-        
-        //return response()->json(['html' => $html]);
     }
+
 
     /**
      * Display a listing of the resource.
@@ -43,8 +48,8 @@ class ProductoController extends Controller
 
     public function create()
     {
-        
-        return view('products.create');
+        $categories = Category::all();
+        return view('products.create', compact('categories'));
     }
 
     /**
@@ -54,15 +59,31 @@ class ProductoController extends Controller
     {
         $request->validate(
 
-            ['nombre' => 'required|min:3',
-            'precio' => 'required|numeric',
-            'categoria' => 'required',
+            ['name' => 'required|min:3',
+            'price' => 'required|numeric',
             'stock' => 'required|integer'
             ]
         );
 
-        $producto = Producto::create($request->all());
-        return redirect()->route('admin.productos.index', $producto)->with('mensaje','El producto ha sido registrado exitosamente');;
+        $categoria = Category::where('id', $request->category)->first();
+
+    
+        // if (!$categoria) {
+        //     $categoria = Category::create(['name' => $request->category]);
+          
+        // }
+        
+        $producto = Producto::create([
+            'name' => $request->name,
+            'price' => $request->price,
+            'stock' => $request->stock,
+            'category_id' => $categoria->id, 
+            'type_id' => 1
+        ]);
+
+        
+        //$producto = Producto::create($request->all());
+        return redirect()->route('admin.productos.index', $producto)->with('mensaje','El producto ha sido registrado exitosamente');
     }
 
     /**
@@ -76,31 +97,44 @@ class ProductoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit( $id)
+    public function edit($id)
     {
         //$producto = Producto::all();  
         $producto = Producto::findOrFail($id);
-        return view('products.edit', compact('producto'));
+        $categories = Category::all();
+        //return view('products.edit', compact('producto'));
+        return view('products.edit', compact('producto', 'categories'));
     }
+    
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Producto $producto)
     {
-        
         $request->validate(
 
-            ['nombre' => 'required|min:3',
-            'precio' => 'required|numeric',
-            'categoria' => 'required',
+            ['name' => 'required|min:3',
+            'price' => 'required|numeric',
             'stock' => 'required|integer'
             ]
         );
 
+        $categoria = Category::where('id', $request->category)->first();
+        
+        $producto = Producto::findOrFail($producto->id);
+
+        // $producto = update([
+        //     'name' => $request->name,
+        //     'price' => $request->price,
+        //     'stock' => $request->stock,
+        //     'category_id' => $categoria->id, 
+        //     'type_id' => 1
+        // ]);
+
         $producto->update($request->all());
        
-        return redirect()->route('admin.productos.edit', $producto)->with('mensaje','El producto ha sido actualizado exitosamente');;
+        return redirect()->route('admin.productos.edit', $producto)->with('mensaje','El producto ha sido actualizado exitosamente');
     }
 
     /**
@@ -111,4 +145,10 @@ class ProductoController extends Controller
         $producto->delete();
         return redirect()->route('admin.productos.index')->with('mensaje','El producto ha sido eliminado exitosamente');
     }
+
+
+   
 }
+
+
+    

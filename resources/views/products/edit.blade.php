@@ -27,7 +27,7 @@
             @csrf
             @method('PUT')
 
-            <x-adminlte-input type="text" name="nombre" label="Nombre" placeholder="Nombre del producto" label-class="text-lightblue" value="{{ $producto->nombre, old('nombre')}}">
+            <x-adminlte-input type="text" name="name" label="Nombre" placeholder="Nombre del producto" label-class="text-lightblue" value="{{ $producto->name, old('name')}}">
             <x-slot name=“prependSlot”>
                 <div class=“input-group-text”>
                     <i class=“fas fa-user text-lightblue”></i>
@@ -35,15 +35,18 @@
             </x-slot>
              </x-adminlte-input>
 
-             <x-adminlte-input type="text" name="categoria" label="Categoría" placeholder="Nombre de la categoría" label-class="text-lightblue" value="{{$producto->categoria, old('categoria')}}">
+             <x-adminlte-select  name="category" label="Categoría" placeholder="Nombre de la categoría" label-class="text-lightblue" value="{{old('category')}}">
+                @foreach ($categories as $category)
+                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                @endforeach
             <x-slot name=“prependSlot”>
                 <div class=“input-group-text”>
                     <i class=“fas fa-user text-lightblue”></i>
                 </div>
             </x-slot>
-             </x-adminlte-input>
+             </x-adminlte-select>
 
-             <x-adminlte-input name="precio" label="Precio" placeholder="Precio del producto" type="number" step="any"  label-class="text-lightblue" value="{{$producto->precio, old('precio')}}">
+             <x-adminlte-input name="price" label="Precio" placeholder="Precio del producto" type="number" step="any"  label-class="text-lightblue" value="{{$producto->price, old('price')}}">
                 <x-slot name="appendSlot">
                     <div class="input-group-text bg-lightblue">
                         <i class="fas fa-hashtag"></i>

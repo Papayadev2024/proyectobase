@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Product\ProductoController;
+use App\Http\Controllers\Product\CategoryController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,7 +34,9 @@ Route::get('/home', function() {
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::resource('admin/productos',ProductoController::class)->names('admin.productos');
-
+Route::resource('admin/categorias',CategoryController::class)->names('admin.categorias');
 // Route::get('/ruta-ajax', [ProductoController::class, 'metodoAjax'])->name('ruta-ajax');
 
 Route::post('admin/productos/updateDestacado', [ProductoController::class, 'updateDestacado'] )->name('producto.updateDestacado');
+
+Route::post('admin/productos/deleteProducto', [ProductoController::class, 'deleteProducto'] )->name('producto.deleteProducto');
