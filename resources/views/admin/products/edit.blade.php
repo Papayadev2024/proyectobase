@@ -35,9 +35,20 @@
             </x-slot>
              </x-adminlte-input>
 
-             <x-adminlte-select  name="category" label="Categoría" placeholder="Nombre de la categoría" label-class="text-lightblue" value="{{old('category')}}">
+             <x-adminlte-select  name="category_id" label="Categoría" placeholder="Nombre de la categoría" label-class="text-lightblue" value="{{ $producto->category->name }}">
                 @foreach ($categories as $category)
-                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                <option value="{{ $category->id }}" {{$category->id == $producto->category->id ? "selected" : "" }}>{{ $category->name }}</option>
+                @endforeach
+                <x-slot name=“prependSlot”>
+                    <div class=“input-group-text”>
+                        <i class=“fas fa-user text-lightblue”></i>
+                    </div>
+                </x-slot>
+             </x-adminlte-select>
+
+             <x-adminlte-select  name="type_id" label="Tipo" placeholder="Nombre del tipo" label-class="text-lightblue" value="{{old('type_id')}}">
+                @foreach ($types as $type)
+                <option value="{{ $type->id }}" {{$type->id == $producto->type->id ? "selected" : ""}}>{{ $type->name }}</option>
                 @endforeach
             <x-slot name=“prependSlot”>
                 <div class=“input-group-text”>
@@ -45,6 +56,7 @@
                 </div>
             </x-slot>
              </x-adminlte-select>
+             
 
              <x-adminlte-input name="price" label="Precio" placeholder="Precio del producto" type="number" step="any"  label-class="text-lightblue" value="{{$producto->price, old('price')}}">
                 <x-slot name="appendSlot">

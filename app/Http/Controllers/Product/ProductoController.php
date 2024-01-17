@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Producto;
 use App\Models\Category;
+use App\Models\Type;
 
 class ProductoController extends Controller
 {
@@ -36,7 +37,7 @@ class ProductoController extends Controller
     public function index()
     {
         $productos = Producto::all();    
-        return view('products.index', compact('productos'));
+        return view('admin.products.index', compact('productos'));
     }
 
 
@@ -49,7 +50,9 @@ class ProductoController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('products.create', compact('categories'));
+        $types = Type::all();
+
+        return view('admin.products.create', compact('categories', 'types'));
     }
 
     /**
@@ -57,6 +60,7 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         $request->validate(
 
             ['name' => 'required|min:3',
@@ -64,21 +68,14 @@ class ProductoController extends Controller
             'stock' => 'required|integer'
             ]
         );
-
-        $categoria = Category::where('id', $request->category)->first();
-
     
-        // if (!$categoria) {
-        //     $categoria = Category::create(['name' => $request->category]);
-          
-        // }
         
         $producto = Producto::create([
             'name' => $request->name,
             'price' => $request->price,
             'stock' => $request->stock,
-            'category_id' => $categoria->id, 
-            'type_id' => 1
+            'category_id' => $request->category_id, 
+            'type_id' => $request->type_id
         ]);
 
         
@@ -102,8 +99,9 @@ class ProductoController extends Controller
         //$producto = Producto::all();  
         $producto = Producto::findOrFail($id);
         $categories = Category::all();
+        $types = Type::all();
         //return view('products.edit', compact('producto'));
-        return view('products.edit', compact('producto', 'categories'));
+        return view('admin.products.edit', compact('producto', 'categories', 'types'));
     }
     
 
@@ -112,6 +110,7 @@ class ProductoController extends Controller
      */
     public function update(Request $request, Producto $producto)
     {
+       
         $request->validate(
 
             ['name' => 'required|min:3',
@@ -120,15 +119,13 @@ class ProductoController extends Controller
             ]
         );
 
-        $categoria = Category::where('id', $request->category)->first();
-        
         $producto = Producto::findOrFail($producto->id);
 
         // $producto = update([
         //     'name' => $request->name,
         //     'price' => $request->price,
         //     'stock' => $request->stock,
-        //     'category_id' => $categoria->id, 
+        //     'category_id' => $request->id, 
         //     'type_id' => 1
         // ]);
 

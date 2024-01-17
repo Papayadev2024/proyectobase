@@ -32,6 +32,7 @@
                 <th>ID</th>
                 <th>NOMBRE</th>
                 <th>CATEGORIA</th>
+                <th>TIPO</th>
                 <th>PRECIO</th>
                 <th>STOCK</th>
                 <th>DESTACADO</th>
@@ -45,6 +46,7 @@
                     <td>{{$producto->id}}</td>
                     <td>{{$producto->name}}</td>
                     <td>{{$producto->category->name}}</td>
+                    <td>{{$producto->type->name}}</td>
                     <td>{{$producto->price}}</td>
                     <td>{{$producto->stock}}</td>
                     <td>

@@ -22,9 +22,21 @@
              </x-adminlte-input>
 
 
-            <x-adminlte-select  name="category" label="Categoría" placeholder="Nombre de la categoría" label-class="text-lightblue" value="{{old('category')}}">
+            <x-adminlte-select  name="category_id" label="Categoría" placeholder="Nombre de la categoría" label-class="text-lightblue" value="{{old('category')}}">
                 @foreach ($categories as $category)
                 <option value="{{ $category->id }}">{{ $category->name }}</option>
+                @endforeach
+            <x-slot name=“prependSlot”>
+                <div class=“input-group-text”>
+                    <i class=“fas fa-user text-lightblue”></i>
+                </div>
+            </x-slot>
+             </x-adminlte-select>
+
+
+             <x-adminlte-select  name="type_id" label="Categoría" placeholder="Nombre de la categoría" label-class="text-lightblue" value="{{old('type_id')}}">
+                @foreach ($types as $type)
+                <option value="{{ $type->id }}">{{ $type->name }}</option>
                 @endforeach
             <x-slot name=“prependSlot”>
                 <div class=“input-group-text”>
